@@ -12,7 +12,19 @@
   </head>
   <body class="bg-dark">
       <main class="container mt-4">     
-    <h1>Boa noite, Meu Consagrado</h1>
+          <section class="row">
+              <div class="col-lg-4 offset-lg-4" 
+                   id="alert">
+                  <div class="alert alert-success text-center">
+                      <strong id="resultado">
+                          Boa Noite, Meu Consagrado
+                      </strong>
+                      
+                  </div>
+                  
+              </div>
+              
+          </section>
     
       </main>
     <!-- Optional JavaScript -->
