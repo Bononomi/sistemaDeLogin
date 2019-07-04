@@ -266,6 +266,7 @@
            $("#formSenha").validate();
            $("#formRegistro").validate({
                rules:{
+                   
                    senhaUsuarioConfirmar:{
                        equalTo: "#senhaUsuario"
                    }
