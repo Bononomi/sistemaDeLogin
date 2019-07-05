@@ -292,8 +292,52 @@
                         }
                     });
                 }
+                    return true;
+                }); //FIM DO AJAX REGISTROUSUARIO
+                
+            //Envio de dados via Ajax
+           //sem recarregar a página DE LOGIN   
+                           $("#btnEntrar").click(
+                function(e){
                     
-                });
+                    if(document.querySelector("#formLogin").checkValidity()){
+                    //Não deixa o formulário ser enviado
+                    e.preventDefault();
+                    $.ajax({
+                        url: 'recebe.php', 
+                        method: 'post',
+                        data: $('#formLogin').serialize()+'&action=entrar',
+                        success: function(resposta){
+                            $('#alerta').show();
+                            $('#resultado').html(resposta);
+                            
+                        }
+                    });
+                }
+                    return true;
+                }); //FIM DO AJAX ENTRAR 
+                
+                //Envio de dados via Ajax
+           //sem recarregar a página DE GERAR SENHA   
+                           $("#btnGerar").click(
+                function(e){
+                    
+                    if(document.querySelector("#formSenha").checkValidity()){
+                    //Não deixa o formulário ser enviado
+                    e.preventDefault();
+                    $.ajax({
+                        url: 'recebe.php', 
+                        method: 'post',
+                        data: $('#formSenha').serialize()+'&action=gerar',
+                        success: function(resposta){
+                            $('#alerta').show();
+                            $('#resultado').html(resposta);
+                            
+                        }
+                    });
+                }
+                    return true;
+                }); //FIM DO AJAX GERAR SENHA
            
        });
        
