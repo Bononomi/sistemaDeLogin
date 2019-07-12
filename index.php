@@ -1,3 +1,9 @@
+<?php
+session_start();
+if(isset($_SESSION['nomeUsuario']))
+    header("location:perfil.php");
+?>
+
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -128,7 +134,7 @@
                       <!-- Campo Senha -->
                       <div class="form-group">
                           <input type="password" id="senhaUsuario"
-                                 name ="senhaUsuario"
+                                 name="senhaUsuario"
                                  class="form-control"
                                  placeholder="Senha" required
                                  minlength="6">
@@ -314,8 +320,12 @@
                         data:$('#formLogin')
                                 .serialize()+'&action=entrar',
                         success:function(resposta){
+                            if(resposta === "ok"){
+                                window.location = "perfil.php"; 
+                            }else{
                             $('#alerta').show();
                             $('#resultado').html(resposta);
+                        }
                         }                    
                     });            
                 }
