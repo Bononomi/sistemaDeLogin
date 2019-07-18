@@ -3,7 +3,6 @@ session_start();
 if(isset($_SESSION['nomeUsuario']))
     header("location:perfil.php");
 ?>
-
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -321,11 +320,11 @@ if(isset($_SESSION['nomeUsuario']))
                                 .serialize()+'&action=entrar',
                         success:function(resposta){
                             if(resposta === "ok"){
-                                window.location = "perfil.php"; 
+                                window.location = "perfil.php";
                             }else{
-                            $('#alerta').show();
-                            $('#resultado').html(resposta);
-                        }
+                                $('#alerta').show();
+                                $('#resultado').html(resposta);
+                            }
                         }                    
                     });            
                 }

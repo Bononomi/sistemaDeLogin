@@ -1,6 +1,7 @@
 <?php //início de um script PHP
- session_start(); //Inicialização da sessão
- //Memória de Login entre todas as páginas 
+session_start(); //Inicialização da sessão
+//Memória de Login entre todas as páginas
+
 //Importando as configurações de Banco de Dados
 require_once 'configDB.php';
 
@@ -14,36 +15,42 @@ function verificar_entrada($entrada){
 
 if(isset($_POST['action']) 
         && $_POST['action'] == 'entrar'){
-   // echo "Entrou";
-       $nomeUsuário = verificar_entrada($_POST['nomeUsuario']); 
-       $senhaUsuário = verificar_entrada($_POST['senhaUsuario']);
-       $senha= sha1($senhaUsuário);
-       
-       $sql = $conexão->prepare("SELECT * FROM usuario WHERE "
-               . "nomeUsuario=? AND senha=?");
-       $sql->bind_param("ss", $nomeUsuário, $senha);
-       $sql->execute();
-       
-       $busca = $sql->fetch(); 
-       if($busca != null){
-           //Usuário e senha estão corretos
-           $_SESSION['nomeUsuario'] = $nomeUsuário; 
-           echo 'ok'; 
-           
-           if(!empty($_POST['checkLembrar'])){
-               setcookie("nomeUsuario",$nomeUsuário, time()+(365*24*60*60));
-               setcookie('senhaUsuario',$senha, time()+(365*24*60*60)); //1 ano de vida em segundos 
-           }else{
-               //Limpa o cookie
-               if(isset($_COOKIE['nomeUsuario']))
-                   setcookie ('nomeUsuario','');
-               if(isset($_COOKIE['senhaUsuario']))
-                   setcookie ('senhaUsuario','');
-           }
-       }else 
-           echo 'Falhou o login, nome de usuário ou senha inválidos';
-}
-elseif(isset($_POST['action']) 
+    
+    $nomeUsuário = verificar_entrada($_POST['nomeUsuario']);
+    $senhaUsuário = verificar_entrada($_POST['senhaUsuario']);
+    $senha = sha1($senhaUsuário);
+        
+    
+    $sql = $conexão->prepare("SELECT * FROM usuario WHERE "
+            . "nomeUsuario=? AND senha=?");      
+    $sql->bind_param("ss",$nomeUsuário,$senha);
+    
+    $sql->execute();    
+        
+    $busca = $sql->fetch();
+    if($busca != null){
+        //Usuário e senha estão corretos
+        $_SESSION['nomeUsuario'] = $nomeUsuário;
+        echo 'ok';
+        
+        if(!empty($_POST['checkLembrar'])){
+            setcookie("nomeUsuario",$nomeUsuário,
+                    time()+(365*24*60*60));
+            //1 ano de vida em segundos
+            setcookie('senhaUsuario',$senha,
+                    time()+(365*24*60*60));
+        }else{
+            //Limpa o cookie
+            if(isset($_COOKIE['nomeUsuario']))
+                setcookie ('nomeUsuario','');
+            if(isset($_COOKIE['senhaUsuario']))
+                setcookie ('senhaUsuario','');
+        }
+    }else
+        echo "Falhou o login, nome de usuário "
+        . "ou senha inválidos.";
+    
+}elseif(isset($_POST['action']) 
         && $_POST['action'] == 'registro'){
     
     //Sanitização de entradas POST
@@ -77,9 +84,9 @@ elseif(isset($_POST['action'])
         $resultado = $sql->get_result(); //Tabela do Banco
         $linha = $resultado->fetch_array(MYSQLI_ASSOC);
         if($linha['nomeUsuario'] == $nomeUsuário)
-            echo "Nome {$nomeUsuário} indisponível.";
+            echo "Nome $nomeUsuário indisponível.";
         elseif($linha['email'] == $emailUsuário)
-            echo "E-mail {$emailUsuário} indisponível.";            
+            echo "E-mail $emailUsuário indisponível.";            
         else{
             //Preparar a inserção no Banco de dados
             $sql = 
@@ -94,6 +101,7 @@ elseif(isset($_POST['action'])
                 echo "Algo deu errado. Por favor, tente novamente.";            
         }
     }
-}else 
-    header ("location:index.php"); //Redireciona ao acessar este arquivo diretamente 
-                                   // Só funciona quando nada está impresso na tela
+}else
+    header("location:index.php"); 
+//redireciona ao acessar este arquivo diretamente
+//Só funciona quando nada está impresso na tela
